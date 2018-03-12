@@ -1,0 +1,128 @@
+format_version: '2'
+name: My Project
+board:
+  identifier: CustomBoard
+  device: ATmega324P-20MU
+details: null
+application: null
+middlewares:
+  RS232_CLICK_0:
+    user_label: RS232_CLICK_0
+    configuration:
+      add_click_example: true
+    definition: Microchip:clickboard:1.0.0::RS232_clickboard
+    functionality: RS232_Click
+    api: Click:Interface:RS232
+    dependencies:
+      USART Async: USART_ASYNC
+drivers:
+  CPU:
+    user_label: CPU
+    definition: 'Atmel:ATMega164_324_644_drivers:1.0.0::ATmega324P-20MU::CPU::driver_config_definition::SYSCTRL::Drivers:SYSCTRL:'
+    functionality: System
+    api: 'Drivers:SYSCTRL:'
+    configuration:
+      async_input_speed: 32768
+      clkadc_oscillator: Input clock
+      clkasy_oscillator: Async input clock
+      clkcpu_oscillator: Input clock
+      clkio_oscillator: Input clock
+      clkptc_oscillator: Input clock
+      cpu_clock_source: CLKcpu
+      cpu_sreg_i: false
+      enable_async_input: true
+      enable_clkadc: true
+      enable_clkasy: true
+      enable_clkcpu: true
+      enable_clkio: true
+      enable_clkptc: true
+      enable_core_clock: true
+      enable_input: true
+      input_speed: 8000000
+      pm_ivsel: Interrupt vector placed at the beginning of main FLASH memory
+      pm_pud: false
+      pm_se: false
+      pm_sm: Idle
+      prescaler_divider: '1'
+    optional_signals: []
+    variant: null
+    clocks:
+      domain_group:
+        nodes:
+        - name: Core
+          input: Core
+        configuration: {}
+  ADC_0:
+    user_label: ADC_0
+    definition: Atmel:ATMega164_324_644_drivers:1.0.0::ATmega324P-20MU::ADC::driver_config_definition::ADC.Basic::Drivers:ADC:Basic
+    functionality: ADC
+    api: Drivers:ADC:Basic
+    configuration:
+      adcsra_adate: false
+      adcsra_aden: true
+      adcsra_adie: false
+      adcsra_adps: '2'
+      adcsrb_acme: false
+      adcsrb_adts: Free Running mode
+      admux_adlar: false
+      admux_mux: ADC Single Ended Input pin 0
+      admux_refs: AREF, Internal Vref turned off
+    optional_signals: []
+    variant: null
+    clocks:
+      domain_group:
+        nodes:
+        - name: ADC
+          input: CLKadc
+        configuration:
+          adc_clock_source: CLKadc
+  USART_ASYNC:
+    user_label: USART_ASYNC
+    definition: Atmel:ATMega164_324_644_drivers:1.0.0::ATmega324P-20MU::USART0::driver_config_definition::Async.Polled.Mode::Drivers:USART:Basic
+    functionality: USART
+    api: Drivers:USART:Basic
+    configuration:
+      printf_support: true
+      usart_baud_rate: 9600
+      usart_mpcm: false
+      usart_rxcie: true
+      usart_rxen: true
+      usart_txen: true
+      usart_ucpha: Sample data on the first edge of XCK
+      usart_ucpol: false
+      usart_ucsz: 8-bit
+      usart_udord: MSB is transmitted first
+      usart_udrie: false
+      usart_upm: Disabled
+      usart_usbs: 1-bit
+    optional_signals: []
+    variant:
+      specification: UMSEL=0
+      required_signals:
+      - name: USART0/RXD
+        pad: PD0
+        label: RXD
+      - name: USART0/TXD
+        pad: PD1
+        label: TXD
+    clocks:
+      domain_group:
+        nodes:
+        - name: USART
+          input: CLKio
+        configuration:
+          usart_clock_source: CLKio
+pads:
+  PD0:
+    name: PD0
+    definition: Atmel:ATMega164_324_644_drivers:1.0.0::ATmega324P-20MU::pad::PD0
+    mode: Digital input
+    user_label: PD0
+    configuration: null
+  PD1:
+    name: PD1
+    definition: Atmel:ATMega164_324_644_drivers:1.0.0::ATmega324P-20MU::pad::PD1
+    mode: Digital output
+    user_label: PD1
+    configuration: null
+toolchain_options: []
