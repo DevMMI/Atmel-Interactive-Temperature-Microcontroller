@@ -1,7 +1,6 @@
 /*
  * code.c
  *
- * Created: 3/4/2018 11:32:21 PM
  *  Author: Moham893
  * SAML21E         */
 #include <atmel_start.h>
@@ -79,7 +78,7 @@ int main(void){
 		}
 		
 		// calculate desired temperature in voltage (MCP9700 Data Sheet pg 2)
-		// 500 mV = 0°C, 10mV/1°C in addition
+		// 500 mV = 0Â°C, 10mV/1Â°C in addition
 		// we'll assume fan shouldn't be operating below freezing
 		desired_temp_volts = 500 + (desired_temperature * 10); // Units: mV
 		
