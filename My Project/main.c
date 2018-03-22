@@ -35,7 +35,8 @@ int main(void){
 	uint8_t state_btn_one;
 	uint8_t state_btn_two;
 	uint8_t msg;
-	uint16_t actual_temperature_volts;
+	uint8_t actual_temperature_volts;
+	uint8_t normalized_temperature;
 	uint16_t desired_temperature = 25;
 	uint16_t desired_temp_volts;
 	char *message;
@@ -51,12 +52,14 @@ int main(void){
 	
 // Loop
 	// initial poll of buttons
+	// TODO: debounce buttons
 	old_state_btn_one = (PINA & (0x01));
 	old_state_btn_two = (PINA) & (0x08);
 
 	while (1) {
 		
 		// read buttons, decrement/increment desired temperature using the 2
+		// TODO: debounce buttons
 		state_btn_one = (PINA & (0x01));
 		state_btn_two = (PINA & (0x08));
 		if((old_state_btn_one & (0x01)) != (state_btn_one & (0x01))){
@@ -83,8 +86,9 @@ int main(void){
 		
 		// read temperature from analog temperature sensor (MCP9700)
 		actual_temperature_volts = ADC_0_get_conversion(16); // pin 6 for (temperature sensor), maps to channel AIN[16] for ADC Channel[Xplained datasheet pg29]
+		normalized_temperature = actual_temperature_volts >> (ADC_0_get_resolution() - 8);
 		// Compare temperature to desired_temperature
-		if (actual_temperature_volts > desired_temp_volts){
+		if (normalized_temperature > desired_temp_volts){
 			//turn a heater on/off using a GPIO pin when temp falls below desired
 			message = "Heater turned off, AC turned on\r\n";
 			msg = (uint8_t)(message[0]);
@@ -93,7 +97,7 @@ int main(void){
 			PORTB &= ~(0x08);
 			
 		}
-		else if (actual_temperature_volts < desired_temp_volts){
+		else if (normalized_temperature < desired_temp_volts){
 			// turn AC unit on using a GPIO pin when temp rises above desired
 			message = "AC turned off, Heater turned on\r\n";
 			msg = (uint8_t)(message[0]);
