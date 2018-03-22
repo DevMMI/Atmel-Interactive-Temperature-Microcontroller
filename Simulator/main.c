@@ -35,8 +35,8 @@ int main(void){
 	uint8_t state_btn_one;
 	uint8_t state_btn_two;
 	uint8_t msg;
+	uint8_t actual_temperature_volts;
 	uint8_t measurement_normalized;
-	uint16_t actual_temperature_volts;
 	uint16_t desired_temperature = 25;
 	uint16_t desired_temp_volts;
 	char *message;
